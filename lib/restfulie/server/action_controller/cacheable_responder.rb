@@ -1,26 +1,9 @@
-class Expires
-  def do_http_cache(responder)
-    if responder.options[:expires_in]
-      responder.controller.send :expires_in,responder.options[:expires_in]
-      true
-    else
-      false
-    end
-  end
-end
-
 module Restfulie
   module Server
     module ActionController
-      module CacheableResponder
-        
-        CACHES = [::Expires.new]
-        
+      module CacheableResponder        
         def to_format
-          cached = CACHES.inject(false) do |cached, cache|
-            cached || cache.do_http_cache(self)
-          end
-          if ::ActionController::Base.perform_caching && !cached.nil?
+          if ::ActionController::Base.perform_caching
             set_public_cache_control!
             head :not_modified if fresh = request.fresh?(controller.response)
             fresh
@@ -36,7 +19,6 @@ module Restfulie
           cache_control << "public"
           controller.response.headers["Cache-Control"] = cache_control.join(', ')
         end
-
       end
     end
   end
