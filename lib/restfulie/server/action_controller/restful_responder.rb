@@ -3,6 +3,7 @@ module Restfulie
     module ActionController
       class RestfulResponder < ::ActionController::Responder
         
+        include LastModifiedResponder
         include CacheableResponder
         include CreatedResponder
 
