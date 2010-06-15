@@ -3,12 +3,11 @@ module Restfulie
     module ActionController
       module CacheableResponder        
         def to_format
+          super
           if ::ActionController::Base.perform_caching
             set_public_cache_control!
             head :not_modified if fresh = request.fresh?(controller.response)
             fresh
-          else
-            super
           end
         end
           

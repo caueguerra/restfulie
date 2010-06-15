@@ -27,7 +27,7 @@ describe RestfulController, :type => :controller do
       controller.response.etag.should == nil
     end
     
-    it "returns 304 Not Modified if client's cache is still valid" do
+    it "returns 304 Not Modified if client's cache is still valid" do            
       request.env["HTTP_IF_MODIFIED_SINCE"] = Time.utc(2010).httpdate
       get :single
       response.status.to_i.should == 304
